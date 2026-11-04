@@ -1,11 +1,11 @@
-# Formula 1 Rules & Motorsport IoT Sensors Explorer (Upgraded)
+# Formula 1 Sensor Explorer — Educational 3D Telemetry Simulation
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/chandan-bk/formula1-sensors-upgraded)
 
-An interactive, explodable 3D Formula 1 vehicle model and telemetry simulator built with **Three.js** and **Vite**, demonstrating aerodynamic principles, vehicle sub-assemblies, and **32 simulated F1 sensor channels** with an integrated fault-injection and diagnostic simulation engine.
+An interactive, explodable 3D vehicle model and telemetry simulator built with **Three.js** and **Vite**, demonstrating vehicle sub-assemblies, aerodynamic concepts, and **32 simulated sensor channels** with an integrated fault-injection and diagnostic simulation engine.
 
 > **Educational Simulation Notice**  
-> This project is an educational simulation and visualization tool. It contains **32 logical simulated sensor channels** and **55 visual 3D mounting markers** placed on a representative 3D Formula 1 vehicle model. All telemetry streams, oscilloscope traces, sampling rates, and diagnostic fault scenarios are generated in real time by the application's client-side simulation engine. The application **does not acquire real-world Formula 1 vehicle telemetry, connect to physical F1 hardware, or implement proprietary team or FIA electronic control units**.
+> This project is an educational simulation and visualization tool. It contains **32 logical simulated sensor channels** and **55 visual 3D sensor marker instances** placed across a representative 3D racing car model. All telemetry streams, oscilloscope traces, sampling rates, vehicle dynamics calculations, and diagnostic fault scenarios are generated in real time by the application's client-side simulation engine. The application **does not acquire real-world Formula 1 vehicle telemetry, connect to physical F1 hardware, or reproduce proprietary team or sanctioning body electronic architectures**.
 
 👉 **Live Demo**: [https://chandan-bk.github.io/formula1-sensors-upgraded/](https://chandan-bk.github.io/formula1-sensors-upgraded/)
 
@@ -45,31 +45,31 @@ The application is structured into decoupled, modular systems:
 
 ```
 src/
-├── car/                     # Procedural 3D Car Model & Sensors Hardware
+├── car/                     # Procedural 3D Car Model & Visual Sensor Markers
 │   ├── aero.js              # Front & rear active-aero wings, flaps, DRS linkages
 │   ├── body.js              # Chassis floor, sidepods, engine cover, nosecone
 │   ├── build.js             # Master assembly coordinator & registry linking
-│   ├── cockpit.js           # Halo, driver model, steering wheel, pedal box
+│   ├── cockpit.js           # Cockpit protection halo, driver model, steering wheel, pedal box
 │   ├── corners.js           # Brake assemblies, uprights, suspension wishbones, wheels
-│   ├── dims.js              # Regulatory reference dimensions
+│   ├── dims.js              # Representative vehicle dimensions
 │   ├── geometry.js          # Lofted aerodynamic surfaces & compound curves
-│   ├── internals.js         # ICE block, MGU-K, battery energy store, radiators
+│   ├── internals.js         # ICE block, MGU-K concept, battery energy store, radiators
 │   ├── materials.js         # Physically-based rendering (PBR) carbon, titanium, rubber
 │   ├── registry.js          # Part lookup, explode vector transforms, bounding boxes
 │   └── sensors.js           # 3D procedural sensor markers, halos & signal links
 ├── config/
 │   └── sensorsConfig.js     # Feature flags (ENABLE_SENSORS, DEBUG_SENSORS)
 ├── data/
-│   ├── parts.js             # Regulatory component classifications (LTC, OSC, SSC, PDC, TRC)
+│   ├── parts.js             # Engineering component categories (aerodynamics, powertrain, chassis)
 │   ├── sensorDetails.js     # Representative operating principles, spec grids & checklists
 │   ├── sensors.js           # Master catalogue of 32 simulated telemetry channels
 │   └── telemetry.js         # Coupled 30 Hz lap simulator & fault injection engine
-├── dimensions.js            # Interactive regulatory measurement callouts
+├── dimensions.js            # Interactive vehicle dimensional measurement callouts
 ├── studio.js                # Three.js floor shadows, contact occlusion, and studio lighting
 ├── main.js                  # Main render loop, post-processing composer, and event coordinator
 ├── style.css                # Motorsport-inspired dark theme UI styling
 └── ui/
-    ├── callout.js           # Dynamic floating pinned card, SVG leader line, 3 technical tabs
+    ├── callout.js           # Dynamic floating pinned card, SVG leader line, technical tabs
     ├── liveScope.js         # Real-time HTML5 Canvas oscilloscope with threshold limit lines
     ├── panels.js            # Top bar presets, explode slider, layer checkboxes, X-ray mode
     ├── sensorPreview.js     # 360-degree turntable inspector modal with safe resource lifecycle
@@ -86,17 +86,17 @@ src/
 
 ## 3. Sensor Catalogue & 3D Hardware Markers
 
-### Understanding 32 Logical Channels vs. 55 Physical 3D Markers
-A fundamental architectural distinction exists between logical telemetry channels and visual 3D marker instances:
+### Understanding 32 Logical Channels vs. 55 Visual 3D Sensor Marker Instances
+An important architectural distinction exists between the logical telemetry channels and visual 3D marker instances:
 
-1. **32 Logical Catalogue Channels**: Represents the master telemetry database organized into 8 vehicle engineering subsystems. Each channel defines a simulated physical operating principle, representative calibration range, warning/critical safety thresholds, conceptual signal path, and diagnostic troubleshooting checklist.
-2. **55 Visual 3D Hardware Marker Instances**: Represents physical sensor locations mounted across the vehicle chassis in the 3D scene.
-3. **Why These Numbers Differ**: Formula 1 cars feature 4 symmetric wheel/brake/suspension corners (wheel speed, tyre pressure TPMS, tyre surface infrared, carbon disc pyrometer, pushrod strain load cell, linear damper potentiometer) and bilateral mirrored components (dual radiator banks for oil/coolant, dual exhaust pyrometers, active aero flap actuators across left and right wing elements). While each corner and bank has its own visual 3D marker mounted on the car model (totaling 55 instances), telemetry engineering groups these into 32 logical telemetry channels in the master catalogue.
-4. **Simulated Telemetry vs Physical Hardware**: All live readings, oscilloscope waveforms, simulated sample rates, and diagnostic faults shown in this application are generated by a client-side JavaScript 30 Hz vehicle dynamics and telemetry simulation engine (`src/data/telemetry.js`). These values represent realistic engineering models for educational and demonstrative purposes, rather than direct live radio telemetry ingestion from an active Formula 1 racing car.
+1. **32 Logical Catalogue Channels**: Represents the simulated telemetry database organized into 8 functional vehicle engineering subsystems. Each channel defines a simulated operating principle, illustrative calibration range, warning/critical safety thresholds, conceptual signal path, and diagnostic troubleshooting checklist.
+2. **55 Visual 3D Sensor Marker Instances**: Represents interactive visual touchpoints mounted across the 3D car model. These markers indicate representative physical installation areas (e.g. left and right radiator banks, 4 wheel/brake/suspension corners, multi-element active wing actuators). They provide spatial context within the 3D scene and do not claim to mirror verified, physical Formula 1 sensor hardware configurations.
+3. **Illustrative Simulation Parameters**: All sampling frequencies (e.g. 10 Hz to 20,000 Hz) and nominal operating ranges listed in the catalogue are illustrative simulation parameters configured for the educational model. They provide realistic engineering scales for real-time visualization rather than verified real-world hardware specifications.
+4. **Simulated Telemetry vs Physical Measurements**: All live readings, waveforms, and fault scenarios are generated by a client-side JavaScript 30 Hz vehicle dynamics and telemetry simulation engine (`src/data/telemetry.js`).
 
 ### Master Catalogue Summary (32 Simulated Telemetry Channels)
 
-| Subsystem | Sensor Name | Channel Key | Simulated Class | Simulated Rate | Nominal Range |
+| Subsystem | Sensor Name | Channel Key | Functional Role | Illustrative Sim Rate | Illustrative Sim Range |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Wheels & Tyres** | Wheel Speed Sensor | `wheelSpeed` | Control | 1,000 Hz | 0 – 290 rad/s |
 | | Tyre Pressure (TPMS) | `tpms` | Monitoring | 10 Hz | 1.38 – 1.95 bar |
@@ -117,7 +117,7 @@ A fundamental architectural distinction exists between logical telemetry channel
 | **Driver & Cockpit** | Pedal Assembly Dual Potentiometer | `throttle` | Control | 1,000 Hz | 0 – 100 % |
 | | Driver Biometric Glove (PPG) | `heartRate` | Monitoring | 4 Hz | 85 – 188 bpm |
 | | In-Ear 3-Axis Crash Accelerometer | `headG` | Monitoring | 1,000 Hz | 0 – 5.5 g |
-| | Marshalling Light Display | `flag` | Monitoring | 10 Hz | Green / Yellow / Red / SC |
+| | Track Status Light Indicator | `flag` | Monitoring | 10 Hz | Green / Yellow / Red / SC |
 | **Engine & Fuel** | Crankshaft & Camshaft RPM Hall | `rpm` | Control | 20,000 Hz | 4,200 – 14,750 rpm |
 | | Fuel Mass Flow Meter | `fuelFlow` | Monitoring | 100 Hz | 0 – 3,000 MJ/h |
 | | Common-Rail Injection Pressure | `fuelPress` | Control | 2,000 Hz | 200 – 505 bar |
@@ -135,68 +135,70 @@ A fundamental architectural distinction exists between logical telemetry channel
 
 ## 4. Telemetry Physics & Fault Simulation Engine
 
-### Consistent Vehicle Physics Simulation
-Telemetry is not randomly generated. All 32 channels evolve from an integrated 84-second simulated Grand Prix lap (`src/data/telemetry.js`):
-- **Braking**: Throttle drops to 0%, brake pressure surges to 120+ bar, deceleration reaches –5.0g, kinetic energy regenerates into the battery via MGU-K, and carbon disc temperatures climb past 750 °C with progressive cooling on subsequent straights.
-- **Cornering**: Lateral g spikes up to 4.5+ g, suspension pushrod loads transfer across axles, and steering angle correlates with chassis yaw rate.
-- **Active Aero**: Flaps shift between low-drag **Straight Mode** (>205 km/h on straights) and high-downforce **Corner Mode** under cornering and braking.
+### Simulated Physics Relationships vs Real-World Vehicle Dynamics
+Telemetry values evolve from an integrated 84-second simulated circuit lap programmed in client-side JavaScript (`src/data/telemetry.js`):
+- **Braking**: When throttle drops, brake pressure increases, negative longitudinal acceleration develops, simulated kinetic energy regenerates toward the energy store via the MGU-K model, and carbon disc temperatures rise with progressive cooling modeled on straights.
+- **Cornering**: Lateral acceleration develops in turns, suspension pushrod load transfers across axles, and steering angle correlates with simulated chassis yaw rate.
+- **Active Aero**: Flap angle models transition between lower-drag **Straight Mode** (>205 km/h on straights) and higher-downforce **Corner Mode** under cornering and braking.
 
-### Operational Sensor Fault Injection
-The application features an interactive fault-injection suite allowing users to explore representative sensor failure modes:
+*Note on Vehicle Dynamics*: While these physical relationships are coupled mathematically to produce realistic, intuitive telemetry traces, they are educational approximations designed for interactive exploration, not verified vehicle dynamics data or validated lap telemetry from a real Formula 1 car.
 
-1. **Disconnected (Open Circuit)**: Simulates pin pull-out or severed wiring loom. Signal drops immediately to baseline minimum (`OPEN_CKT`), 3D marker dims to slate gray, and scope trace flatlines.
-2. **Stuck (Frozen Reading)**: Simulates frozen converter silicon or seized mechanical linkage. Value freezes at the instantaneous reading regardless of vehicle acceleration (`ADC_FROZEN`).
-3. **High-Frequency Electrical Noise**: Simulates electrical noise interference coupling into unshielded analog signal lines, inducing high-frequency voltage fluctuations (`EMI_NOISE`).
-4. **Out of Range (Saturation)**: Simulates transducer bridge short circuit or rail saturation exceeding normal full-scale operating limits (`SATURATION`).
-5. **Signal Latency (Buffer Delay)**: Simulates buffer queue delay, introducing 3.0 seconds (90 frames at 30 Hz) of latency using genuine historical raw buffer values (`CAN_LAG`).
-6. **Intermittent (Contact Chatter)**: Simulates road-vibration-induced terminal chatter, producing periodic signal dropouts (`INTERMITTENT` / `DROP_OUT`).
+### Hypothetical Simulated Fault Scenarios
+The application features an interactive fault-injection suite allowing users to observe hypothetical sensor failure modes:
+
+1. **Disconnected (Zero/Baseline Drop)**: A hypothetical scenario simulating a signal loss or open-circuit condition, causing the channel reading to drop to its baseline minimum (`OPEN_CKT`) with a dimmed marker and flatline scope trace.
+2. **Stuck (Frozen Value)**: A hypothetical scenario simulating a frozen reading where the channel holds its instantaneous reading fixed regardless of dynamic vehicle changes (`ADC_FROZEN`).
+3. **High-Frequency Disturbance (Simulated Noise)**: A hypothetical scenario demonstrating high-frequency perturbations superimposed on the nominal telemetry waveform (`EMI_NOISE`).
+4. **Out of Range (Scale Saturation)**: A hypothetical scenario simulating channel reading saturation beyond nominal operating envelope boundaries (`SATURATION`).
+5. **Signal Latency (Buffer Delay)**: A hypothetical scenario modeling a 3.0-second (90 frames at 30 Hz) transmission or processing latency using true historical raw buffer values (`CAN_LAG`).
+6. **Intermittent (Signal Dropout)**: A hypothetical scenario demonstrating periodic signal dropout and recovery intervals (`INTERMITTENT`).
 
 Each fault displays an informative diagnostic alert banner explaining:
 - Diagnostic Failure Code (`OPEN_CKT`, `ADC_FROZEN`, `EMI_NOISE`, `SATURATION`, `CAN_LAG`, `INTERMITTENT`)
-- Hypothetical root-cause explanation
-- **Diagnostic Action Checklist** guiding users through representative physical troubleshooting
-- One-click **"Restore Channel to Nominal"** recovery button that clears faults and restores nominal real-time readings.
+- Hypothetical cause explanation
+- **Diagnostic Action Checklist** offering representative troubleshooting steps
+- One-click **"Restore Channel to Nominal"** recovery button that clears the simulated fault and restores nominal real-time readings.
 
 ---
 
 ## 5. End-to-End 6-Stage Telemetry Architecture & Technical Delineation
 
-The data path architecture models the complete signal flow across 6 stages with clear delineation between real-world motorsport concepts, representative educational models, and in-browser simulation:
+The conceptual data path models signal flow across 6 stages with clear delineation between engineering concepts, representative educational models, and in-browser simulation:
 
 ```
-[ Stage 1: Sensing Element ] ➔ Physical transducer, actuator feedback, or virtual state estimation
+[ Stage 1: Sensing Element ] ➔ Transducer or actuator feedback concept
             ▼
-[ Stage 2: Signal Conditioning ] ➔ Differential amplification, anti-aliasing & digitisation
+[ Stage 2: Signal Conditioning ] ➔ Amplification, filtering & digitisation concept
             ▼
-[ Stage 3: Vehicle Network ] ➔ Deterministic vehicle bus architecture concept
+[ Stage 3: Vehicle Network ] ➔ Conceptual vehicle bus architecture
             ▼
 [ Stage 4: Central Processing ] ➔ Central Electronic Control Unit (ECU) concept
             ▼
 [ Stage 5: Wireless Transmission ] ➔ Trackside wireless telemetry streaming concept
             ▼
-[ Stage 6: Engineering Console ] ➔ Pit wall live oscilloscope waveforms, HUD & strategy console
+[ Stage 6: Engineering Console ] ➔ Pit wall live waveforms, HUD & diagnostic console
 ```
 
 ### Architectural Delineation:
-- **Motorsport Engineering Concepts**: Inspired by published automotive and motorsport engineering literature and regulatory principles (centralized ECUs, deterministic vehicle buses, non-contact pyrometers, accident data recorders).
-- **Representative Educational Model**: The 6-stage telemetry model structure presented in the UI demonstrates instrumentation engineering concepts. Specifications regarding bus protocols, wireless streaming, and ECU processing represent conceptual educational models.
+- **Motorsport Engineering Concepts**: Inspired by published automotive and motorsport engineering literature (centralized control units, deterministic vehicle buses, non-contact pyrometers, accident data recorders).
+- **Representative Educational Model**: The 6-stage telemetry model illustrates general instrumentation concepts. Detailed subsystem descriptions (such as MGU-K energy recovery, battery BMS, fuel flow metering, and wireless telemetry links) explain general working principles and do not claim to reproduce proprietary team or manufacturer architectures.
 - **In-Browser JavaScript Simulation**: How this application models vehicle dynamics, sensor signal processing, and fault injection in real time at 30 Hz in the browser DOM and Three.js WebGL pipeline.
 
 ---
 
-## 6. Engineering & Regulatory Context
+## 6. Engineering Context
 
-1. **Anti-Lock Braking (ABS) & Traction Control (TC) Clarification**:
-   Under Formula 1 technical regulations, conventional ABS and driver-assist traction control systems are prohibited. Wheel speed sensors are utilized exclusively for permitted engineering calculations:
+1. **Wheel Speed Sensing in Motorsport**:
+   In modern open-wheel formula racing, conventional passenger-car ABS and driver-assist traction control systems are prohibited by sporting and technical regulations. Wheel speed sensors are instead utilized for permitted engineering and vehicle dynamics calculations:
    - Wheel slip ratio estimation
-   - Rear Brake-by-Wire friction versus MGU-K regen torque migration
-   - Differential ramp preload scheduling
-   - Launch clutch engagement control
-   - Regulatory auditing to verify the absence of prohibited traction control algorithms.
+   - Rear Brake-by-Wire friction versus hybrid regenerative braking torque balance
+   - Differential setup and preload management
+   - Launch clutch engagement monitoring
+   - Regulatory auditing to verify compliance with vehicle control regulations.
 2. **Central Electronic Control Unit (ECU)**:
-   In this educational application, central vehicle ECU behavior is represented via a simulation model that coordinates vehicle dynamics and telemetry channels.
+   In this educational application, central vehicle ECU behavior is represented via a client-side simulation model that coordinates vehicle dynamics and telemetry channels.
 3. **Illustrative vs Real-World Data**:
-   All telemetry traces, sample rates, and calibration thresholds represent realistic engineering approximations for educational and demonstrative purposes. Official team calibrations and telemetry setups remain proprietary.
+   All telemetry traces, sample rates, and calibration thresholds represent realistic engineering approximations for educational demonstration. Official team setups, calibrations, and telemetry systems remain proprietary.
 
 ---
 
@@ -213,6 +215,6 @@ The application builds cleanly to `./dist` via Vite and can be hosted on GitHub 
 
 ## 8. References & Technical Standards
 
-- **Formula 1 Technical Regulations (2026 Issue)** — Reference concepts on Electrical Systems, Powertrain Energy Limits, and Active Aerodynamics.
+- **Formula 1 Technical Reference Concepts** — Educational reference concepts on Electrical Systems, Powertrain Energy Limits, and Active Aerodynamics.
 - **Motorsport Systems Literature** — Published motorsport engineering overviews of central ECU architectures, vehicle buses, and telemetry logging.
 - **Sensor Technology References** — Miniature high-temperature pyrometers, strain gauge load cells, and differential Hall speed transducers.

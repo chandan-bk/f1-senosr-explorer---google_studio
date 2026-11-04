@@ -1,0 +1,31 @@
+{
+  "name": "formula1-sensors-upgraded",
+  "version": "2.0.0",
+  "description": "Interactive 3D Formula 1 Motorsport IoT Telemetry Sensors Explorer Upgraded (Three.js + Vite)",
+  "scripts": {
+    "dev": "vite --port=3000 --host=0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node scripts/unit-tests.mjs",
+    "test:unit": "node scripts/unit-tests.mjs",
+    "test:e2e": "node scripts/test-runner.mjs"
+  },
+  "keywords": [
+    "formula1",
+    "threejs",
+    "motorsport",
+    "iot",
+    "telemetry",
+    "fia-regulations"
+  ],
+  "author": "Chandan B K",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "vite": "^8.3.0"
+  },
+  "private": true
+}

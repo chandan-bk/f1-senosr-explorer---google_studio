@@ -1,0 +1,8 @@
+{
+  "name": "Formula 1 Sensor Explorer",
+  "description": "Interactive 3D Formula 1 telemetry sensors explorer with real-time sensor inspection, telemetry feeds, and fault diagnosis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

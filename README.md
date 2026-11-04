@@ -180,41 +180,50 @@ The conceptual data path models signal flow across 6 stages with clear delineati
 ```
 
 ### Architectural Delineation:
-- **Motorsport Engineering Concepts**: Inspired by published automotive and motorsport engineering literature (centralized control units, deterministic vehicle buses, non-contact pyrometers, accident data recorders).
-- **Representative Educational Model**: The 6-stage telemetry model illustrates general instrumentation concepts. Detailed subsystem descriptions (such as MGU-K energy recovery, battery BMS, fuel flow metering, and wireless telemetry links) explain general working principles and do not claim to reproduce proprietary team or manufacturer architectures.
+- **Automotive Engineering Concepts**: Based on general automotive and motorsport engineering concepts (centralized electronic control units, multiplexed vehicle networks, non-contact pyrometers, and impact data recording).
+- **Representative Educational Model**: The 6-stage telemetry model illustrates general instrumentation concepts. Subsystem descriptions (such as kinetic energy recovery, battery management, fuel flow monitoring, and wireless telemetry links) illustrate functional operating principles without claiming to reproduce proprietary team or manufacturer hardware.
 - **In-Browser JavaScript Simulation**: How this application models vehicle dynamics, sensor signal processing, and fault injection in real time at 30 Hz in the browser DOM and Three.js WebGL pipeline.
 
 ---
 
-## 6. Engineering Context
+## 6. Engineering Context & Modeling Principles
 
-1. **Wheel Speed Sensing in Motorsport**:
-   In modern open-wheel formula racing, conventional passenger-car ABS and driver-assist traction control systems are prohibited by sporting and technical regulations. Wheel speed sensors are instead utilized for permitted engineering and vehicle dynamics calculations:
-   - Wheel slip ratio estimation
-   - Rear Brake-by-Wire friction versus hybrid regenerative braking torque balance
-   - Differential setup and preload management
-   - Launch clutch engagement monitoring
-   - Regulatory auditing to verify compliance with vehicle control regulations.
-2. **Central Electronic Control Unit (ECU)**:
-   In this educational application, central vehicle ECU behavior is represented via a client-side simulation model that coordinates vehicle dynamics and telemetry channels.
-3. **Illustrative vs Real-World Data**:
-   All telemetry traces, sample rates, and calibration thresholds represent realistic engineering approximations for educational demonstration. Official team setups, calibrations, and telemetry systems remain proprietary.
+1. **Wheel-Speed Sensing in Vehicle Dynamics**:
+   In high-performance automotive and motorsport applications, rotational wheel-speed measurement is fundamental to chassis dynamics analysis and powertrain control:
+   - Estimating tyre slip ratio during acceleration and braking phases
+   - Comparing corner-to-corner rotational speeds to evaluate yaw and handling characteristics
+   - Assisting brake-by-wire balance calculations and energy regeneration coordination
+   - Evaluating differential behavior and torque distribution across driven wheels
+   - Cross-referencing vehicle speed estimates with accelerometer data.
+2. **Simulated Control Unit Architecture**:
+   In this educational application, supervisory vehicle control unit behavior is represented via a client-side simulation model that coordinates vehicle dynamics, lap progression, and sensor channel values.
+3. **Illustrative Simulation Parameters**:
+   All telemetry waveforms, sample rates, operating envelopes, and calibration thresholds represent illustrative simulation parameters chosen to demonstrate engineering principles. They do not represent proprietary manufacturer calibrations or verified racing team configurations.
 
 ---
 
-## 7. Deployment to Vercel & GitHub Pages
+## 7. Production Build & Deployment
+
+The standard Vite build script compiles and bundles the project into static web assets within the `./dist` directory, suitable for deployment to any static web host (such as GitHub Pages or Vercel):
 
 ```bash
-# Production deployment via Vercel CLI
-npx vercel --prod
+# Build the production bundle
+npm run build
+
+# Optional preview of the local build output
+npm run preview
 ```
-The application builds cleanly to `./dist` via Vite and can be hosted on GitHub Pages or any static web host:
+
+Online demonstration:
 [https://chandan-bk.github.io/formula1-sensors-upgraded/](https://chandan-bk.github.io/formula1-sensors-upgraded/)
 
 ---
 
-## 8. References & Technical Standards
+## 8. Further Reading and Engineering Context
 
-- **Formula 1 Technical Reference Concepts** — Educational reference concepts on Electrical Systems, Powertrain Energy Limits, and Active Aerodynamics.
-- **Motorsport Systems Literature** — Published motorsport engineering overviews of central ECU architectures, vehicle buses, and telemetry logging.
-- **Sensor Technology References** — Miniature high-temperature pyrometers, strain gauge load cells, and differential Hall speed transducers.
+This project draws upon general automotive engineering concepts and illustrative simulation parameters to provide an interactive educational tool:
+
+- **General Engineering Principles**: The 3D vehicle assemblies, subsystem layouts, and sensor classifications demonstrate widely recognized automotive instrumentation and vehicle dynamics principles rather than specific proprietary vehicle designs.
+- **Illustrative Parameters**: Sampling rates, operating boundaries, sensor response curves, and simulated fault modes are illustrative values designed for educational visualization and interactive experimentation.
+- **Independent Educational Scope**: The application is an independent educational exploration of 3D computer graphics, user interface design, and simulated telemetry data paths in the browser.
+

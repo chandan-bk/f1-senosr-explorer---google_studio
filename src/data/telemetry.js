@@ -6,13 +6,13 @@
  * vehicle state (velocity, acceleration, brake pressure, aerodynamic load, powertrain torque,
  * and chassis dynamics).
  *
- * Includes an aerospace-grade Sensor Fault Simulation Engine supporting 6 operational fault modes:
- *   1. Disconnected (Open circuit / 0 V signal loss)
- *   2. Stuck (ADC freeze / mechanical seizure)
- *   3. Noisy (High-frequency EMI interference from 350 kW MGU-K switching)
- *   4. Out of Range (Positive rail electrical saturation)
- *   5. Delayed (CAN queue latency / 3.0 s phase lag)
- *   6. Intermittent (Contact bounce / periodic signal dropouts)
+ * Includes a sensor fault simulation engine supporting 6 representative failure modes for educational exploration:
+ *   1. Disconnected (Open circuit / signal loss to minimum baseline)
+ *   2. Stuck (ADC freeze / mechanical seizure simulation)
+ *   3. Noisy (High-frequency electrical interference simulation)
+ *   4. Out of Range (Signal saturation exceeding normal limits)
+ *   5. Delayed (Buffer queue latency / 3.0 s phase lag)
+ *   6. Intermittent (Periodic signal dropouts under vibration)
  *
  * All figures and formulas are representative motorsport engineering approximations,
  * not confidential team proprietary data.
@@ -33,55 +33,55 @@ export const FAULT_MODES = {
     severity: 'nominal',
     code: 'OK',
     description: 'Sensor transducer and signal conditioning operating within normal calibration tolerances.',
-    investigation: 'Channel healthy. Continue standard telemetry logging.',
+    investigation: 'Channel healthy. Normal telemetry logging active.',
   },
   disconnected: {
     id: 'disconnected',
     label: 'Disconnected (Open Circuit)',
     severity: 'critical',
     code: 'OPEN_CKT',
-    description: 'Complete signal loss due to wiring loom disconnection, pin pull-out, or fractured transducer element. Signal drops to bottom rail.',
-    investigation: 'Inspect MIL-DTL-38999 / Deutsch connector pin retention, test wiring harness continuity, and verify 5V sensor excitation supply rail.',
+    description: 'Simulated open circuit or wiring disconnection causing complete signal loss to minimum baseline.',
+    investigation: 'Hypothetical diagnostic check: Inspect harness connectors, test wiring continuity, and verify sensor excitation supply.',
   },
   stuck: {
     id: 'stuck',
     label: 'Stuck (Frozen Reading)',
     severity: 'critical',
     code: 'ADC_FROZEN',
-    description: 'Analog-to-Digital Converter frozen or mechanical linkage seized. Transducer outputs a constant frozen value regardless of car dynamics.',
-    investigation: 'Cycle sensor interface power, check ADC SPI/I2C communication bus clock line, and inspect mechanical slider/pivot for mechanical seizure.',
+    description: 'Simulated frozen reading, representative of an analog-to-digital converter lockup or mechanical linkage seizure.',
+    investigation: 'Hypothetical diagnostic check: Cycle interface power, inspect data bus communication, and check mechanical travel freedom.',
   },
   noisy: {
     id: 'noisy',
-    label: 'EMI Noise (Inverter Interference)',
+    label: 'EMI Noise (Interference)',
     severity: 'warning',
     code: 'EMI_NOISE',
-    description: 'Severe electromagnetic interference coupled from the high-voltage (900V) MGU-K inverter into unshielded analog signal lines.',
-    investigation: 'Inspect 360-degree braided cable shielding termination, check chassis ground bond resistance (< 0.05 Ohm), and enable SECU hardware low-pass filter.',
+    description: 'Simulated electrical interference coupled into analog sensor signal lines.',
+    investigation: 'Hypothetical diagnostic check: Inspect cable shielding, check chassis grounding resistance, and verify signal filtering.',
   },
   out_of_range: {
     id: 'out_of_range',
     label: 'Out of Range (Rail Saturation)',
     severity: 'critical',
     code: 'SATURATION',
-    description: 'Transducer internal short circuit or bridge failure causing output to saturate against the positive reference voltage rail (>130% full-scale).',
-    investigation: 'Perform bench zero-span calibration check, verify bridge excitation current, and replace thermally damaged sensing element.',
+    description: 'Simulated signal saturation exceeding normal full-scale operating limits, representative of a bridge short circuit.',
+    investigation: 'Hypothetical diagnostic check: Perform zero-span calibration check, verify excitation current, and inspect sensor element.',
   },
   delayed: {
     id: 'delayed',
-    label: 'Signal Latency (CAN Buffer Lag)',
+    label: 'Signal Latency (Buffer Delay)',
     severity: 'warning',
     code: 'CAN_LAG',
-    description: 'Simulated CAN queue backlog or gateway buffer congestion introducing ~3.0 seconds of latency between physical event and telemetry record.',
-    investigation: 'Examine CAN arbitration priority IDs, audit bus load utilization (target < 70%), and clear stale node queue buffers.',
+    description: 'Simulated buffer queue delay introducing 3.0 seconds of latency between physical vehicle dynamics and logged telemetry.',
+    investigation: 'Hypothetical diagnostic check: Audit message scheduling, gateway buffer queues, and network bus load utilization.',
   },
   intermittent: {
     id: 'intermittent',
-    label: 'Intermittent (Contact Bounce)',
+    label: 'Intermittent (Contact Chatter)',
     severity: 'warning',
     code: 'INTERMITTENT',
-    description: 'High-vibration road surface excitation inducing periodic contact bounce in connector terminals, causing rapid signal dropouts.',
-    investigation: 'Inspect crimp terminal tension, replace fretted gold contacts, and add silicone potting/strain relief at suspension wishbone joints.',
+    description: 'Simulated intermittent connection causing periodic signal dropouts under high-vibration conditions.',
+    investigation: 'Hypothetical diagnostic check: Inspect terminal pin tension, contact fretting, and wiring harness strain relief.',
   },
 };
 
@@ -591,9 +591,12 @@ export function createTelemetry() {
   Object.assign(state, { speed: 300, brake: 0, longG: 0, latG: 0, phase: 0, t: 0 });
   Object.assign(rawState, { speed: 300, brake: 0, longG: 0, latG: 0, phase: 0, t: 0 });
 
-  // Delay buffers for delayed fault mode (3 seconds = 90 frames)
-  const delayBuffers = Object.fromEntries(keys.map((k) => [k, new Float32Array(180)]));
+  // Delay buffers for delayed fault mode (3 seconds = 90 frames at 30 Hz)
+  const DELAY_FRAMES = 90;
+  const DELAY_CAPACITY = 180;
+  const delayBuffers = Object.fromEntries(keys.map((k) => [k, new Float32Array(DELAY_CAPACITY)]));
   let delayHead = 0;
+  let delayValidCount = 0;
 
   // Active faults store: channelKey -> { type: string, stuckValue: number, startTime: number }
   const faults = new Map();
@@ -750,9 +753,16 @@ export function createTelemetry() {
             break;
           }
           case 'delayed': {
-            // Retrieve value from 90 frames ago (3.0s at 30Hz)
-            const dIdx = (delayHead - 90 + 180) % 180;
-            val = delayBuffers[k][dIdx];
+            // Retrieve value from 90 frames ago (3.0s at 30Hz), or oldest valid sample if buffer is still warming up
+            if (delayValidCount >= DELAY_FRAMES) {
+              const dIdx = (delayHead - DELAY_FRAMES + DELAY_CAPACITY) % DELAY_CAPACITY;
+              val = delayBuffers[k][dIdx];
+            } else if (delayValidCount > 0) {
+              const dIdx = (delayHead - delayValidCount + DELAY_CAPACITY) % DELAY_CAPACITY;
+              val = delayBuffers[k][dIdx];
+            } else {
+              val = r[k];
+            }
             break;
           }
           case 'intermittent': {
@@ -768,7 +778,10 @@ export function createTelemetry() {
       }
       s[k] = val;
     }
-    delayHead = (delayHead + 1) % 180;
+    delayHead = (delayHead + 1) % DELAY_CAPACITY;
+    if (delayValidCount < DELAY_CAPACITY) {
+      delayValidCount++;
+    }
   }
 
   /** Step simulator by delta time */
@@ -806,6 +819,7 @@ export function createTelemetry() {
     sim._coolant = 101;
     sim._prevSpeed = 308;
     delayHead = 0;
+    delayValidCount = 0;
     for (const k of keys) delayBuffers[k].fill(0);
 
     // Warm buffers up to start line

@@ -610,16 +610,26 @@ function detachListeners() {
   }
 }
 
-/** Remove and free every child of a group (geometries and per-model materials). */
+/** Remove and free every child of a group (geometries and unique per-model materials). */
 function disposeGroup(group) {
   if (!group) return;
   const shared = new Set(Object.values(materials));
   group.traverse((o) => {
-    o.geometry?.dispose?.();
-    const m = o.material;
-    if (m && !shared.has(m)) (Array.isArray(m) ? m : [m]).forEach((x) => x.dispose?.());
+    if (o.geometry) {
+      o.geometry.dispose?.();
+    }
+    if (o.material) {
+      const mats = Array.isArray(o.material) ? o.material : [o.material];
+      for (const m of mats) {
+        if (m && !shared.has(m)) {
+          m.dispose?.();
+        }
+      }
+    }
   });
-  while (group.children.length) group.remove(group.children[0]);
+  while (group.children.length) {
+    group.remove(group.children[0]);
+  }
 }
 
 /**

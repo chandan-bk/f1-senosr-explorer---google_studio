@@ -499,7 +499,7 @@ export class Callout {
           </ol>
         </div>
         <div class="path-simulation-notice">
-          ℹ️ <b>System Architecture Notice:</b> Stages 1–3 represent vehicle electronics hardware concepts. Stage 4 models the McLaren Applied TAG-320 SECU concept. In this web application, vehicle physics, CAN message queuing, and radio telemetry streaming are running inside the client-side JavaScript simulation engine.
+          ℹ️ <b>System Architecture Notice:</b> Stages 1–3 represent vehicle sensor and wiring concepts. Stage 4 models a central electronic control unit. In this web application, vehicle dynamics, bus message queuing, and telemetry data are computed inside the client-side JavaScript simulation engine.
         </div>
       </div>`;
 

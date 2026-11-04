@@ -602,7 +602,7 @@ const BASE_SENSORS = [
     parentPartId: 'ecu',
     anchor: { x: -0.28, y: 0.25, z: -0.36 },
     measures: 'Central processing hub, master CAN gateway, and scrutineering data recorder',
-    whyItMatters: 'The central engine and chassis control unit concept (modelled after the McLaren Applied TAG-320 architecture), executing FIA-standard control laws to enforce technical parity.',
+    whyItMatters: 'The central engine and chassis control unit concept, coordinating vehicle sensor networks, closed-loop powertrain systems, and telemetry streaming.',
     dataPath: 'Central ECU bus hub -> Vehicle network -> Telemetry transmission module',
     mirrored: false,
   },
